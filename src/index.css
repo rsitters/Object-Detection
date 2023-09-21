@@ -1,0 +1,17 @@
+.object-detection {
+    text-align: center;
+  }
+  
+  .image-container {
+    position: relative;
+    display: inline-block;
+  }
+  
+  .bounding-box {
+    background-color: rgba(0,0,0,0.5);
+    position: absolute;
+    border: 5px solid red; 
+    color: white;
+    font-size: 14px;
+  }
+  
