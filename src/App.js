@@ -1,11 +1,10 @@
-import React from 'react';
-import './App.css';
-import ObjectDetection from './ObjectDetection';
+import React from "react";
+import "./App.css";
+import ObjectDetection from "./ObjectDetection";
 
 function App() {
   return (
-    <div className="App">
-      <h1>Object Detection App</h1>
+    <div>
       <ObjectDetection />
     </div>
   );

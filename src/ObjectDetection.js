@@ -1,10 +1,10 @@
-import React, { useState } from 'react';
-import * as tf from '@tensorflow/tfjs';
-import * as cocoSsd from '@tensorflow-models/coco-ssd';
-import './App.css';
+import React, { useState } from "react";
+import * as tf from "@tensorflow/tfjs";
+import * as cocoSsd from "@tensorflow-models/coco-ssd";
+import "./App.css";
 
 function ObjectDetection() {
-  const [imageURL, setImageURL] = useState('');
+  const [imageURL, setImageURL] = useState("");
   const [predictions, setPredictions] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
 
@@ -14,7 +14,7 @@ function ObjectDetection() {
 
     if (file) {
       const model = await cocoSsd.load();
-      const imageElement = document.createElement('img');
+      const imageElement = document.createElement("img");
 
       imageElement.onload = async () => {
         const predictions = await model.detect(imageElement);
@@ -27,11 +27,11 @@ function ObjectDetection() {
     }
   };
 
-return (
+  return (
     <div className="object-detection">
-      <h2>Object Detection</h2>
+      <h1>Object Detection</h1>
       <input type="file" accept="image/*" onChange={handleImageUpload} />
-  
+
       {isLoading ? (
         <p>Loading...</p>
       ) : (
@@ -41,23 +41,26 @@ return (
               <img
                 src={imageURL}
                 alt="Uploaded"
-                style={{ maxWidth: '400px' }}
+                style={{ maxHeight: "400px" }}
                 onLoad={() => {
-                  const imageElement = document.querySelector('.image-container img');
+                  const imageElement = document.querySelector(
+                    ".image-container img"
+                  );
                   const scaleX = imageElement.width / imageElement.naturalWidth;
-                  const scaleY = imageElement.height / imageElement.naturalHeight;
-  
+                  const scaleY =
+                    imageElement.height / imageElement.naturalHeight;
+
                   const scaledPredictions = predictions.map((prediction) => ({
                     class: prediction.class,
                     score: prediction.score,
                     bbox: [
-                      prediction.bbox[0] * scaleX, 
-                      prediction.bbox[1] * scaleY, 
-                      prediction.bbox[2] * scaleX, 
-                      prediction.bbox[3] * scaleY, 
+                      prediction.bbox[0] * scaleX,
+                      prediction.bbox[1] * scaleY,
+                      prediction.bbox[2] * scaleX,
+                      prediction.bbox[3] * scaleY,
                     ],
                   }));
-  
+
                   setPredictions(scaledPredictions);
                 }}
               />
@@ -72,7 +75,9 @@ return (
                     height: prediction.bbox[3],
                   }}
                 >
-                  {`${prediction.class} (${Math.round(prediction.score * 100)}%)`}
+                  {`${prediction.class} (${Math.round(
+                    prediction.score * 100
+                  )}%)`}
                 </div>
               ))}
             </div>
@@ -81,7 +86,6 @@ return (
       )}
     </div>
   );
-  
 }
 
 export default ObjectDetection;
