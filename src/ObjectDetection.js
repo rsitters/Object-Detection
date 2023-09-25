@@ -7,6 +7,28 @@ function ObjectDetection() {
   const [imageURL, setImageURL] = useState("");
   const [predictions, setPredictions] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
+  const boundingBoxColors = [
+    "red",
+    "blue",
+    "green",
+    "orange",
+    "purple",
+    "cyan",
+    "magenta",
+    "yellow",
+    "pink",
+    "teal",
+    "lime",
+    "brown",
+    "maroon",
+    "navy",
+    "olive",
+    "gray",
+    "violet",
+    "indigo",
+    "turquoise",
+  ];
+  
 
   const handleImageUpload = async (event) => {
     setIsLoading(true);
@@ -50,16 +72,19 @@ function ObjectDetection() {
                   const scaleY =
                     imageElement.height / imageElement.naturalHeight;
 
-                  const scaledPredictions = predictions.map((prediction) => ({
-                    class: prediction.class,
-                    score: prediction.score,
-                    bbox: [
-                      prediction.bbox[0] * scaleX,
-                      prediction.bbox[1] * scaleY,
-                      prediction.bbox[2] * scaleX,
-                      prediction.bbox[3] * scaleY,
-                    ],
-                  }));
+                  const scaledPredictions = predictions.map(
+                    (prediction, index) => ({
+                      class: prediction.class,
+                      score: prediction.score,
+                      bbox: [
+                        prediction.bbox[0] * scaleX,
+                        prediction.bbox[1] * scaleY,
+                        prediction.bbox[2] * scaleX,
+                        prediction.bbox[3] * scaleY,
+                      ],
+                      color: boundingBoxColors[index % boundingBoxColors.length],
+                    })
+                  );
 
                   setPredictions(scaledPredictions);
                 }}
@@ -73,13 +98,24 @@ function ObjectDetection() {
                     top: prediction.bbox[1],
                     width: prediction.bbox[2],
                     height: prediction.bbox[3],
+                    borderColor: prediction.color
                   }}
                 >
-                  {`${prediction.class} (${Math.round(
-                    prediction.score * 100
-                  )}%)`}
                 </div>
               ))}
+              <div className="predictions-container">
+                {predictions.map((prediction, index) => (
+                  <div
+                    key={index}
+                    className="prediction"
+                    style={{ color: prediction.color }}
+                  >
+                    {`${prediction.class} (${Math.round(
+                      prediction.score * 100
+                    )}%)`}
+                  </div>
+                ))}
+              </div>
             </div>
           )}
         </>
