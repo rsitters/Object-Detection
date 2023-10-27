@@ -1,12 +1,14 @@
 import React, { useState } from "react";
 import * as tf from "@tensorflow/tfjs";
 import * as cocoSsd from "@tensorflow-models/coco-ssd";
-import "./App.css";
+import "./index.css";
 
 function ObjectDetection() {
+  //Set initial states
   const [imageURL, setImageURL] = useState("");
   const [predictions, setPredictions] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
+  //Colors used for bounding boxes
   const boundingBoxColors = [
     "red",
     "blue",
@@ -29,22 +31,26 @@ function ObjectDetection() {
     "turquoise",
   ];
   
-
+  //Function to upload the image
   const handleImageUpload = async (event) => {
     setIsLoading(true);
     const file = event.target.files[0];
 
     if (file) {
+      //Loads COCO-SSD model if image is uploaded
       const model = await cocoSsd.load();
       const imageElement = document.createElement("img");
 
+      //Performs object detection once image is uploaded 
       imageElement.onload = async () => {
         const predictions = await model.detect(imageElement);
+        //Sets predictions, image url and stops loading
         setPredictions(predictions);
         setImageURL(URL.createObjectURL(file));
         setIsLoading(false);
       };
 
+      //Loads the image
       imageElement.src = URL.createObjectURL(file);
     }
   };
@@ -52,6 +58,7 @@ function ObjectDetection() {
   return (
     <div className="object-detection">
       <h1>Object Detection</h1>
+      {/*Input so image can be uploaded*/}
       <input type="file" accept="image/*" onChange={handleImageUpload} />
 
       {isLoading ? (
@@ -65,7 +72,8 @@ function ObjectDetection() {
                 alt="Uploaded"
                 style={{ maxHeight: "400px" }}
                 onLoad={() => {
-                  const imageElement = document.querySelector(
+                 //Scales predictions based on image size
+                 const imageElement = document.querySelector(
                     ".image-container img"
                   );
                   const scaleX = imageElement.width / imageElement.naturalWidth;
@@ -85,11 +93,12 @@ function ObjectDetection() {
                       color: boundingBoxColors[index % boundingBoxColors.length],
                     })
                   );
-
-                  setPredictions(scaledPredictions);
+                  //Sets the scaled predictions
+                  setPredictions(scaledPredictions); 
                 }}
               />
               {predictions.map((prediction, index) => (
+                //Displays bounding boxes for detected objects
                 <div
                   key={index}
                   className="bounding-box"
@@ -105,6 +114,7 @@ function ObjectDetection() {
               ))}
               <div className="predictions-container">
                 {predictions.map((prediction, index) => (
+                  //Displays predictions with class and score
                   <div
                     key={index}
                     className="prediction"
@@ -112,7 +122,7 @@ function ObjectDetection() {
                   >
                     {`${prediction.class} (${Math.round(
                       prediction.score * 100
-                    )}%)`}
+                    )}% )`}
                   </div>
                 ))}
               </div>

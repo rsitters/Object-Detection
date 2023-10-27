@@ -1,17 +1,42 @@
+body {
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background-image: linear-gradient(#66a6ff, #89f7fe);
+}
+
+h1 {
+    margin: 0;
+    padding: 0;
+}
+
 .object-detection {
     text-align: center;
-  }
-  
-  .image-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+    margin: 2rem;
+}
+
+.image-container {
     position: relative;
     display: inline-block;
-  }
-  
-  .bounding-box {
+}
+
+.bounding-box {
     background-color: rgba(0,0,0,0.5);
     position: absolute;
     border: 5px solid red; 
     color: white;
     font-size: 14px;
-  }
-  
+}
+
+.predictions-container {
+    background-color: black;
+    padding: 1rem;
+    border-radius: 5rem;
+}

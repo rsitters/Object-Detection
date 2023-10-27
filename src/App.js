@@ -1,10 +1,11 @@
 import React from "react";
-import "./App.css";
+import "./index.css";
 import ObjectDetection from "./ObjectDetection";
 
 function App() {
   return (
     <div>
+      {/*Renders the ObjectDetection component*/}
       <ObjectDetection />
     </div>
   );
